@@ -17,9 +17,9 @@ Route::prefix('/blog')->name('blog.')->group(function () {
 
         $post = Post::find(1);
         $post->title = 'Nouveau titre';
-        $post->save();
+        $post->delete();
 
-        return $post;
+        dd($post);
 
     })->name('index'); // donner un nom à la route
 
