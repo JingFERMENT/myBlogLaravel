@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -9,29 +10,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// regrouper les routes du blog (pour changer facilement le préfixe)
-Route::prefix('/blog')->name('blog.')->group(function () {
 
-    Route::get('/', function (Request $request) {
+Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(function () {
 
-        $posts = Post::paginate(1);
+    Route::get('/', 'index')->name('index'); 
 
-        return $posts;
-
-    })->name('index'); // donner un nom à la route
-
-    // rajouter les paramètres dans l'URL
-    Route::get('/{slug}/{id}', function (string $slug, int $id, Request $request) {
-        
-        $post = Post::findOrFail($id);
-        
-        if($post->slug != $slug){
-            return redirect()->route('blog.show', ['slug' => $post->slug, 'id' => $post->id]);
-        }
-    })->where([
+    Route::get('/{slug}/{id}', 'show')->where([
         'slug' => '[a-zA-Z0-9\-]+',
         'id' => '[0-9]+'
-    ])->name('show'); // ajouter les conditions sur les paramètres
+    ])->name('show');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
