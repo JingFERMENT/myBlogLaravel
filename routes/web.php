@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,12 +14,16 @@ Route::prefix('/blog')->name('blog.')->group(function () {
 
     Route::get('/', function (Request $request) {
 
-        return [
-            'link' => route('blog.show', [
-                'slug' => 'mon-super-article',
-                'id' => 1
-            ]),
-        ];
+        $post = new Post();
+
+        $post->title = 'Mon troisieme article';
+        $post->slug = 'mon-troisième-article';
+        $post->content = 'Contenu de mon troisiem article';
+
+        $post->save();
+
+        return $post;
+
     })->name('index'); // donner un nom à la route
 
     // rajouter les paramètres dans l'URL
