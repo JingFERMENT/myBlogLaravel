@@ -14,21 +14,20 @@ Route::prefix('/blog')->name('blog.')->group(function () {
 
     Route::get('/', function (Request $request) {
 
+        $posts = Post::paginate(1);
 
-        $post = Post::find(1);
-        $post->title = 'Nouveau titre';
-        $post->delete();
-
-        dd($post);
+        return $posts;
 
     })->name('index'); // donner un nom à la route
 
     // rajouter les paramètres dans l'URL
     Route::get('/{slug}/{id}', function (string $slug, int $id, Request $request) {
-        return [
-            "slug" => $slug,
-            "id" => $id,
-        ];
+        
+        $post = Post::findOrFail($id);
+        
+        if($post->slug != $slug){
+            return redirect()->route('blog.show', ['slug' => $post->slug, 'id' => $post->id]);
+        }
     })->where([
         'slug' => '[a-zA-Z0-9\-]+',
         'id' => '[0-9]+'
