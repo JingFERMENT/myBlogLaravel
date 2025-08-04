@@ -14,17 +14,12 @@ Route::prefix('/blog')->name('blog.')->group(function () {
 
     Route::get('/', function (Request $request) {
 
-        // récupérer les posts
-        // $posts = Post::all(['id', 'title']);
 
-        // dd($posts->first());
+        $post = Post::find(1);
+        $post->title = 'Nouveau titre';
+        $post->save();
 
-        // return $posts->findOrFail(4);
-
-        // return Post::paginate(3);
-
-        // query builder
-        return Post::where('id', '>', 0)->limit(3)->get();
+        return $post;
 
     })->name('index'); // donner un nom à la route
 
