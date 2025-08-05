@@ -10,7 +10,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(function () {
 
     Route::get('/', 'index')->name('index'); 
