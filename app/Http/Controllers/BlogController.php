@@ -5,12 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class BlogController extends Controller
 {
     public function index(): View
     {
+        // Validator::make(request()->all(), [
+        //     'page' => 'integer|min:1',
+        // ])->validate();
+
+        $Validator = Validator::make([
+            'slug' => '', 
+        ], [ 'slug' => Rule::unique('posts') ]);
+
+    // dd($Validator->fails());
+    // dd($Validator->errors()); 
+     dd($Validator->validated()); 
+        
+        
         $posts = Post::paginate(1);
 
         // return the view with the paginated posts
