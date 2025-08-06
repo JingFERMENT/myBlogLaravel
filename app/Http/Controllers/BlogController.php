@@ -14,7 +14,7 @@ class BlogController extends Controller
 {
     public function index(BlogFilterRequest $request): View
     {   
-        dd($request->validated());
+       
         $posts = Post::paginate(1);
 
         // return the view with the paginated posts
@@ -23,15 +23,8 @@ class BlogController extends Controller
         ]);
     }
 
-    public function show(string $slug, int $id): RedirectResponse|View
+    public function show(Post $post): RedirectResponse|View
     {
-        $post = Post::findOrFail($id);
-
-        if ($post->slug != $slug) {
-            return redirect()->route('blog.show', ['slug' => $post->slug, 'id' => $post->id]);
-        }
-
-        // return the view with the post
          return view('blog.show', [
             'post' => $post,
         ]);

@@ -6,18 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(function () {
 
     Route::get('/', 'index')->name('index'); 
 
-    Route::get('/{slug}/{id}', 'show')->where([
-        'slug' => '[a-zA-Z0-9\-]+',
-        'id' => '[0-9]+'
+    // model binding for Post
+    // the route will automatically resolve the Post model based on the slug
+    // and pass it to the show method
+    Route::get('/{post:slug}', 'show')->where([
+        'post' => '[a-z0-9\-]+'
     ])->name('show');
+
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
