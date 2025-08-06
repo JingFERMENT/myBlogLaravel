@@ -14,12 +14,10 @@ Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(
 
     Route::get('/', 'index')->name('index'); 
 
-    // model binding for Post
-    // the route will automatically resolve the Post model based on the slug
-    // and pass it to the show method
-    Route::get('/{post:slug}', 'show')->where([
-        'post' => '[a-z0-9\-]+'
-    ])->name('show');
+    Route::get('/{slug}/{post}', 'show')->where([
+        'slug' => '[a-z0-9\-]+',
+        'post' => '[0-9]+'
+    ])->name('show'); 
 
 });
 

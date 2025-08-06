@@ -23,9 +23,16 @@ class BlogController extends Controller
         ]);
     }
 
-    public function show(Post $post): RedirectResponse|View
+    public function show(String $slug, Post $post): RedirectResponse|View
     {
-         return view('blog.show', [
+        if($post->slug != $slug){
+            return redirect()->route('blog.show', [
+                'slug' => $post->slug,
+                'id' => $post->id
+            ]);   
+        }
+
+        return view('blog.show', [
             'post' => $post,
         ]);
     }
