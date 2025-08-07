@@ -36,4 +36,9 @@ class BlogController extends Controller
             'post' => $post,
         ]);
     }
+
+    public function create(): View
+    {
+        return view('blog.create');
+    }
 }
