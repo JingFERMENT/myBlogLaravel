@@ -41,6 +41,12 @@
         </div>
     </nav>
     <div class="container">
+        {{-- pour traiter le message d'erreur / de succès --}}
+        @if(session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+        @endif
         @yield('content')
     </div>
 </body>

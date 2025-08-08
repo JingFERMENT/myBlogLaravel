@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogFilterRequest;
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class BlogController extends Controller
 {
-    public function index(BlogFilterRequest $request): View
+    public function index(): View
     {   
        
         $posts = Post::paginate(1);
@@ -39,6 +37,20 @@ class BlogController extends Controller
 
     public function create(): View
     {
+        // methode pour récupérer les données de la session
+        // dd(session()->all());
         return view('blog.create');
+    }
+
+    public function store(CreatePostRequest $request): RedirectResponse
+    {
+        $post = Post::create($request->validated());
+
+        // $post = Post::create($validated);
+
+        return redirect()->route('blog.show', [
+            'slug' => $post->slug,
+            'post' => $post->id
+        ])->with('success', 'L\'article a été créé avec succès.');
     }
 }
